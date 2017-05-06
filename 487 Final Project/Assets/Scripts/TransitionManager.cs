@@ -34,6 +34,8 @@ public class TransitionManager : MonoBehaviour
 	public float transitionDuration = 1.5f; // seconds
 
 	public bool InAR { get { return mTransitionCursor <= 0.66f; } }
+	public static bool InVR;
+
 	#endregion PUBLIC_MEMBER_VARIABLES
 
 
@@ -148,6 +150,7 @@ public class TransitionManager : MonoBehaviour
 				CancelInvoke ("UnZoomCamera");
 			}
 		}
+		InVR = !InAR;
 	}
 	#endregion // MONOBEHAVIOUR_METHODS
 

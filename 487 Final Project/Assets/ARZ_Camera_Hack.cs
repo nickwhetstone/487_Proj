@@ -8,7 +8,7 @@ public class ARZ_Camera_Hack : MonoBehaviour {
 	public GameObject stereoCameraLeft = null;
 	public GameObject stereoCameraRight = null;
 	public bool camerasReady = false;
-
+	public bool needsComponents = true;
 	// Use this for initialization
 	void Start () {
 		
@@ -21,7 +21,13 @@ public class ARZ_Camera_Hack : MonoBehaviour {
 			GetCameraComponents ();
 		} else {
 			camerasReady = true;
+			if (TransitionManager.InVR && needsComponents) {
+				// AddCameraComponents (stereoCameraLeft);
+				// AddCameraComponents (stereoCameraRight);
+				needsComponents = false;
+			} // TODO: remove comp when in aR
 		}
+
 	}
 	public void MoveCamera (Transform camTransform, float translation, float rotation) {
 		camTransform.Translate(0, 0, translation);
@@ -41,5 +47,14 @@ public class ARZ_Camera_Hack : MonoBehaviour {
 				Debug.Log ("Found Cam Right");
 			} 
 		}
+	}
+	private void AddCameraComponents(GameObject cam) {
+				Rigidbody camRb = cam.AddComponent<Rigidbody> ();
+				camRb.useGravity = true;
+				camRb.isKinematic = false;
+				camRb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+
+				BoxCollider col = cam.AddComponent<BoxCollider> ();
+				col.size = new Vector3(5f,1f,1f);
 	}
 }

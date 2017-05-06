@@ -50,11 +50,11 @@ public class AgentApproachTargetState : IAgentState {
 				 agentSpeed = 0;
 				 animSpeed = 0;
 			}
-			Debug.Log ("distance: " + distance);
+			/*Debug.Log ("distance: " + distance);
 			Debug.Log ("agentSpeed: " + agentSpeed);
 			Debug.Log ("maxDistance: " + maxDistance);
 			Debug.Log ("closestPoint: " + closestPoint);
-			Debug.Log ("animSpeed: " + animSpeed);
+			Debug.Log ("animSpeed: " + animSpeed);*/
 
 			// assign them
 			agentController.SetAgentMove ("walk");
