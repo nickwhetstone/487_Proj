@@ -16,6 +16,7 @@ public class StatePatternAgent : MonoBehaviour {
 		public Transform defaultEatObject;
 		public string agentType = "leader"; 
 		public Transform defaultLeader;
+
 		/*
 		 *   An Agent Can Be:
 		 * 
@@ -26,7 +27,7 @@ public class StatePatternAgent : MonoBehaviour {
 
 		[HideInInspector] public Transform chaseTarget;
 		[HideInInspector] public Transform eatObject;
-		[HideInInspector] public IAgentState currentState;
+		public IAgentState currentState;
 		[HideInInspector] public AgentCuteState agentCuteState;
 		[HideInInspector] public AgentPatrolState agentPatrolState;
 		[HideInInspector] public AgentChaseState agentChaseState;
@@ -36,6 +37,7 @@ public class StatePatternAgent : MonoBehaviour {
 		[HideInInspector] public AgentAlertState agentAlertState;
 		[HideInInspector] public AgentDeathState agentDeathState;
 		[HideInInspector] public AgentSleepState agentSleepState;
+	[HideInInspector] public AgentApproachTargetState agentApproachTargetState;
 		[HideInInspector] public NavMeshAgent navMeshAgent;
 		[HideInInspector] public AgentController agentController;
 
@@ -50,6 +52,7 @@ public class StatePatternAgent : MonoBehaviour {
 			agentAlertState = new AgentAlertState (this);
 			agentDeathState = new AgentDeathState (this);
 			agentSleepState = new AgentSleepState (this);
+		agentApproachTargetState = new AgentApproachTargetState (this);
 
 			navMeshAgent = GetComponent<NavMeshAgent> ();
 			agentController = GetComponent<AgentController> ();
@@ -58,29 +61,34 @@ public class StatePatternAgent : MonoBehaviour {
 		// Use this for initialization
 		void Start () 
 		{
-			if (defaultLeader) {
-			// TODO: Make a follow state
-				chaseTarget = defaultLeader;
-				currentState = agentChaseState;
-			} else if (defaultState == "patrol") {
-				currentState = agentPatrolState;
-			} else if (defaultState == "eat") {
-				eatObject = defaultEatObject;
-				currentState = agentEatState;
-			}
-			
+			ToState ("ApproachTarget");
+			chaseTarget = GameObject.FindGameObjectWithTag("Player").transform;
+
+
+			/*
+				if (defaultLeader) {
+				// TODO: Make a follow state
+					chaseTarget = defaultLeader;
+					currentState = agentChaseState;
+				} else if (defaultState == "patrol") {
+					currentState = agentPatrolState;
+				} else if (defaultState == "eat") {
+					eatObject = defaultEatObject;
+					currentState = agentEatState;
+				}
+			*/
 		}
 
 		// Update is called once per frame
 		void Update () 
 		{
-			if (!agentController.isdead) {
+		Debug.Log (currentState);
 				currentState.UpdateState ();
-			}
 		}
 
 		private void OnTriggerEnter(Collider other)
 		{
+		/*
 			if (currentState == agentSleepState) {
 			} else {
 				if (other.gameObject.CompareTag ("Agent")) {
@@ -101,20 +109,37 @@ public class StatePatternAgent : MonoBehaviour {
 					currentState.OnTriggerEnter (other);
 				}
 			}
+			*/
 		}
 	public void Kill() {
+		/*
 		if (!agentController.isdead) {
 			agentController.SetAgentMove ("kill");
 			currentState = agentDeathState;
 			navMeshAgent.Stop ();
-
 		}
+		*/
 	}
 	public void Sleep() {
+		/*
 		if (!agentController.isdead) {
 			agentController.SetAgentMove ("sleep");
 			currentState = agentSleepState;
 			navMeshAgent.Stop ();
+		}
+		*/
+	}
+	public void ToState(string stateName) {
+		Debug.Log ("Changing to state: " + stateName);
+		switch (stateName) {
+		case "ApproachTarget":
+				currentState = agentApproachTargetState; 
+				break;			
+			case "Patrol": 
+				currentState = agentPatrolState;
+				break;
+			default: 
+				break;
 		}
 	}
 }

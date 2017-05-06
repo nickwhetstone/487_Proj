@@ -84,6 +84,9 @@ public class AgentController : MonoBehaviour
 			UpdateAgent ();
 		}
 	}
+	public void SetAgentAnimationSpeed(float spd) {
+		anim.speed = spd;
+	}
 	//Animation controller
 	public void UpdateAgent() {
 		if (AI) //CPU

@@ -20,11 +20,6 @@ public class AgentChaseState : IAgentState {
 	{
 
 	}
-
-	public void ToAgentCuteState()
-	{
-		// current state
-	}
 	public void ToAgentPatrolState()
 	{
 		agent.currentState = agent.agentPatrolState;
@@ -32,26 +27,6 @@ public class AgentChaseState : IAgentState {
 	public void ToAgentCircleState()
 	{
 		agent.currentState = agent.agentCircleState;
-	}
-	public void ToAgentChaseState()
-	{
-		Debug.Log ("Can't transition to same state");
-	}
-	public void ToAgentAttackState()
-	{
-		
-	}
-	public void ToAgentEatState()
-	{
-	}
-	public void ToAgentAlertState()
-	{
-	}
-	public void ToAgentDeathState()
-	{
-	}
-	public void ToAgentSleepState()
-	{
 	}
 	private void Look()
 	{
@@ -62,7 +37,7 @@ public class AgentChaseState : IAgentState {
 		}
 		else
 		{
-			ToAgentAlertState ();
+			// ToAgentAlertState ();
 		}
 
 	}
