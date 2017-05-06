@@ -35,7 +35,7 @@ public class AgentApproachTargetState : IAgentState {
 			// toggle our actual speed and our animation speed based on the distance to target
 
 			// get speeds
-			float distance = navAgent.remainingDistance;
+			float distance = Vector3.Distance(navAgent.transform.position, target.position); //navAgent.remainingDistance;
 			float agentSpeed = 0;
 			float animSpeed = 0;
 			float closestPoint = 6f;
@@ -50,11 +50,17 @@ public class AgentApproachTargetState : IAgentState {
 				 agentSpeed = 0;
 				 animSpeed = 0;
 			}
+			Debug.Log ("distance: " + distance);
+			Debug.Log ("agentSpeed: " + agentSpeed);
+			Debug.Log ("maxDistance: " + maxDistance);
+			Debug.Log ("closestPoint: " + closestPoint);
+			Debug.Log ("animSpeed: " + animSpeed);
 
 			// assign them
+			agentController.SetAgentMove ("walk");
 			navAgent.speed = agentSpeed;
 			agentController.SetAgentAnimationSpeed (animSpeed);
-			agentController.SetAgentMove ("walk");
+
 
 		} else {
 			// what the heck do we crawl towards?
