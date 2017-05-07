@@ -3,33 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class AgentAttackState : IAgentState {
+public class AgentStareDownState : IAgentState 
+{
 	private readonly StatePatternAgent agent;
-	private float circleTimer;
-	public AgentAttackState (StatePatternAgent statePatternAgent)
+	private float stareTimer = 0f;
+
+	public AgentStareDownState (StatePatternAgent statePatternAgent)
 	{
 		agent = statePatternAgent;
 	}
 
 	public void UpdateState()
 	{
-		Look ();
-		Attack ();
+		StareDown ();
 	}
 
 	public void OnTriggerEnter (Collider other)
 	{
-		if (other.gameObject.CompareTag ("Player")) {
-			if (!agent.agentController.isdead) {
-				other.gameObject.SendMessage("ApplyDamage", 5.0F);
-			}
-		}
+		
 	}
-	private void Look()
-	{
-	}
-
-	private void Attack()
+	private void StareDown()
 	{
 		if (agent.chaseTarget != null) {
 			Transform target = agent.chaseTarget;
@@ -38,6 +31,8 @@ public class AgentAttackState : IAgentState {
 			float stoppingDistance = agent.stoppingDistance;
 			float giveUpDistance = agent.giveUpDistance;
 			float maxAgentSpeed = agent.maxAgentSpeed;
+
+
 			// make the target the agents destination
 			navAgent.destination = target.position;
 
@@ -48,24 +43,23 @@ public class AgentAttackState : IAgentState {
 			float animSpeed = 0;
 			float maxDistance = stoppingDistance + distance + 4f;
 
-			if (distance < ( stoppingDistance + giveUpDistance )) {
-				agentSpeed = Mathf.Clamp(distance / 10,0f,maxAgentSpeed);
-				animSpeed = 3f;
+			stareTimer += Time.deltaTime;
+
+			if (stareTimer >= agent.stareDuration) {
+				stareTimer = 0f;
+				agent.ToState ("Attack");
 			} else if ( distance > ( stoppingDistance + giveUpDistance ) ) {
 				agent.ToState ("ApproachTarget");
 			} else {
-				
+				// Strafe and look towards player
+				agentSpeed = Mathf.Clamp(distance / 5,0f,maxAgentSpeed);
+
 			}
-			/*Debug.Log ("distance: " + distance);
-			Debug.Log ("agentSpeed: " + agentSpeed);
-			Debug.Log ("maxDistance: " + maxDistance);
-			Debug.Log ("closestPoint: " + closestPoint);
-			Debug.Log ("animSpeed: " + animSpeed);*/
 
 			// assign them
-			agentController.SetAgentMove ("attack");
+			agentController.SetAgentMove ("idle");
 			navAgent.speed = agentSpeed;
-			agentController.SetAgentAnimationSpeed (animSpeed);
+			agentController.SetAgentAnimationSpeed (1f);
 
 
 		} else {
@@ -76,5 +70,4 @@ public class AgentAttackState : IAgentState {
 
 
 	}
-
 }

@@ -7,6 +7,8 @@ public class StatePatternAgent : MonoBehaviour {
 		public float searchingTurnSpeed = 120f;
 		public float searchingDuration = 10f;
 		public float circleDuration = 4f;
+		public float stareDuration = 3f;
+		public float maxAgentSpeed = 3f;
 		public float sightRange = 20f;
 		public Transform[] wayPoints;
 		public Transform eyes;
@@ -16,6 +18,10 @@ public class StatePatternAgent : MonoBehaviour {
 		public Transform defaultEatObject;
 		public string agentType = "leader"; 
 		public Transform defaultLeader;
+		public float stoppingDistance = 2f;
+		public float giveUpDistance = 1f;
+
+		// stell31@yahoo.com
 
 		/*
 		 *   An Agent Can Be:
@@ -28,7 +34,6 @@ public class StatePatternAgent : MonoBehaviour {
 		[HideInInspector] public Transform chaseTarget;
 		[HideInInspector] public Transform eatObject;
 		public IAgentState currentState;
-		[HideInInspector] public AgentCuteState agentCuteState;
 		[HideInInspector] public AgentPatrolState agentPatrolState;
 		[HideInInspector] public AgentChaseState agentChaseState;
 		[HideInInspector] public AgentCircleState agentCircleState;
@@ -37,13 +42,13 @@ public class StatePatternAgent : MonoBehaviour {
 		[HideInInspector] public AgentAlertState agentAlertState;
 		[HideInInspector] public AgentDeathState agentDeathState;
 		[HideInInspector] public AgentSleepState agentSleepState;
-	[HideInInspector] public AgentApproachTargetState agentApproachTargetState;
+	    [HideInInspector] public AgentApproachTargetState agentApproachTargetState;
+		[HideInInspector] public AgentStareDownState agentStareDownState;
 		[HideInInspector] public NavMeshAgent navMeshAgent;
 		[HideInInspector] public AgentController agentController;
 
 		private void Awake()
 		{
-			agentCuteState = new AgentCuteState (this);
 			agentPatrolState = new AgentPatrolState (this);
 			agentChaseState = new AgentChaseState (this);
 			agentCircleState = new AgentCircleState (this);
@@ -52,7 +57,8 @@ public class StatePatternAgent : MonoBehaviour {
 			agentAlertState = new AgentAlertState (this);
 			agentDeathState = new AgentDeathState (this);
 			agentSleepState = new AgentSleepState (this);
-		agentApproachTargetState = new AgentApproachTargetState (this);
+			agentApproachTargetState = new AgentApproachTargetState (this);
+			agentStareDownState = new AgentStareDownState (this);
 
 			navMeshAgent = GetComponent<NavMeshAgent> ();
 			agentController = GetComponent<AgentController> ();
@@ -135,9 +141,15 @@ public class StatePatternAgent : MonoBehaviour {
 		case "ApproachTarget":
 				currentState = agentApproachTargetState; 
 				break;			
-			case "Patrol": 
-				currentState = agentPatrolState;
-				break;
+		case "Patrol": 
+			currentState = agentPatrolState;
+			break;			
+		case "Attack": 
+			currentState = agentAttackState;
+			break;
+		case "StareDown": 
+			currentState = agentStareDownState;
+			break;
 			default: 
 				break;
 		}

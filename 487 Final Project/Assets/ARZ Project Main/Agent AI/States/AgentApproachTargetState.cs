@@ -15,19 +15,14 @@ public class AgentApproachTargetState : IAgentState {
 
 	public void UpdateState()
 	{
-		if (!crawlBack) {
-			// inch to player
-			ApproachTarget();
-		} else {
-
-
-		}
+		ApproachTarget();
 	}
 	public void ApproachTarget() {
 		if (agent.chaseTarget != null) {
 			Transform target = agent.chaseTarget;
 			NavMeshAgent navAgent = agent.navMeshAgent;
 			AgentController agentController = agent.agentController;
+			float stoppingDistance = agent.stoppingDistance;
 
 			// make the target the agents destination
 			navAgent.destination = target.position;
@@ -38,17 +33,18 @@ public class AgentApproachTargetState : IAgentState {
 			float distance = Vector3.Distance(navAgent.transform.position, target.position); //navAgent.remainingDistance;
 			float agentSpeed = 0;
 			float animSpeed = 0;
-			float closestPoint = 6f;
-			float maxDistance = closestPoint + distance + 4f;
+			float maxDistance = stoppingDistance + distance + 4f;
+			float maxAgentSpeed = agent.maxAgentSpeed;
 
-			if (distance > closestPoint) {
-				agentSpeed = Mathf.Clamp(distance / 5,0f,3f);
+
+			if (distance > stoppingDistance) {
+				agentSpeed = Mathf.Clamp(distance / 5,0f,maxAgentSpeed);
 				// Debug.Log(2.Remap(1, 3, 0, 10));    // 5
-
-				animSpeed = distance.Remap(closestPoint,maxDistance, 0.1F, 3F);
+				animSpeed = distance.Remap(stoppingDistance,maxDistance, 0.1F, 3F);
+			} else if ( distance < stoppingDistance ) {
+				agent.ToState ("StareDown");
 			} else {
-				 agentSpeed = 0;
-				 animSpeed = 0;
+				// ?
 			}
 			/*Debug.Log ("distance: " + distance);
 			Debug.Log ("agentSpeed: " + agentSpeed);
