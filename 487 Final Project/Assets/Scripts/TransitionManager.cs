@@ -82,14 +82,14 @@ public class TransitionManager : MonoBehaviour
 			// so to reduce CPU usage, as tracking is not needed in this phase
 			// (with AutoStopCameraIfNotRequired ON by default, camera/tracker
 			//  will be turned off for performance optimization).
-
+			/*  the police 
 			if (mCurrentMode == MixedRealityController.Mode.HANDHELD_VR
 				|| mCurrentMode == MixedRealityController.Mode.VIEWER_VR)
 			{
 				Debug.Log("Switching to VR: deactivating datasets");
 				ActivateDatasets(false);
 			}
-
+			*/
 			// As we are moving back to AR, we re-activate the Datasets,
 			// before setting the mixed reality mode.
 			// this will ensure that the Tracker and Camera are restarted, 

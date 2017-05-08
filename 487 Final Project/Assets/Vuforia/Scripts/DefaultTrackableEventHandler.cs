@@ -20,7 +20,9 @@ namespace Vuforia
     
         #endregion // PRIVATE_MEMBER_VARIABLES
 
-
+		public static bool forwardImageIsFound = false;
+		public static bool gunImageIsFound = false;
+		public static bool companionImageIsFound = false;
 
         #region UNTIY_MONOBEHAVIOUR_METHODS
     
@@ -83,6 +85,16 @@ namespace Vuforia
                 component.enabled = true;
             }
 
+			bool isFound = true;
+			switch(mTrackableBehaviour.TrackableName.Trim()) {
+			case "run": forwardImageIsFound = isFound;
+				break;
+			case "gun": gunImageIsFound = isFound;
+				break;
+			default:
+				break;
+			}
+
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " found");
         }
 
@@ -103,6 +115,16 @@ namespace Vuforia
             {
                 component.enabled = false;
             }
+
+			bool isFound = false;
+			switch(mTrackableBehaviour.TrackableName.Trim()) {
+				case "run": forwardImageIsFound = isFound;
+					break;
+				case "gun": gunImageIsFound = isFound;
+					break;
+				default:
+					break;
+			}
 
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");
         }

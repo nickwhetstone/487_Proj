@@ -4,7 +4,21 @@ using UnityEngine;
 
 public class ARZ_Player_Control : MonoBehaviour {
 	public bool camerasHookedUp = false;
-	public float lastY = 0;
+	public float last = 0;
+
+	public float speed = 10.0F;
+	public float rotationSpeed = 100.0F;
+
+	public float smooth = 0.4f;
+	public float inputValue;
+	public float newRotationX;
+	public float newRotationY;
+	public float newRotationZ;
+	public float sensitivity = 6;
+	private Vector3 currentAcceleration, initialAcceleration;
+	public float baseSpeed = 3f;
+	public GameObject gun;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -19,50 +33,69 @@ public class ARZ_Player_Control : MonoBehaviour {
 			userHead.transform.localRotation = Quaternion.identity;
 			Screen.orientation = ScreenOrientation.Landscape; // TODO: might not be needed
 			camerasHookedUp = true;
+			Input.gyro.enabled = true;
 		}
 		if (camerasHookedUp) {
-			Vector3 acc = Input.acceleration;
-			float x = acc.x;
-			float y = acc.y;
-			float z = acc.z;
 
-			// clamp the current rotation speed
-			Debug.Log ("Y before: " + y);
-			y = Mathf.Clamp (y, -0.4f, 0.4f);
-			Debug.Log ("Y after: " + y);
-
-
-			// check if the transform is at its max rotations
-			Vector3 currentRotation = transform.localRotation.eulerAngles;
-			// accelerometer y changes the x
-			float nextX = currentRotation.x - y;
-
-			// now that we have what we could possibly go to, check if it's within bounds.
-
-			Debug.Log ("currentRotation.x: " + currentRotation.x);
-			bool noGood = false;
-			if (nextX > 320 && nextX < 360) {
-				// good
-				// down
-				lastY = y;
-			} else if (nextX > 40 && nextX < 320) {
-				// no good
-				y = -lastY;
-			} else if (nextX < 40) {
-				// good
-				// up
-				lastY = y;
+			if (Vuforia.DefaultTrackableEventHandler.gunImageIsFound) {
+				gun.GetComponent<MeshRenderer> ().enabled = true;
+				// start firing
+			} else {
+				gun.GetComponent<MeshRenderer> ().enabled = false;
+				// stop firing
 			}
 
-			Debug.Log ("Next X: " + nextX);
-			Debug.Log ("Final Y: " + y);
-			transform.Rotate (y, -x, 0);
+			// test ();
+			// UpdateMe();
+			Debug.Log("-------------");
+			Vector3 currentRotation = transform.localRotation.eulerAngles;
 
+			//  -Input.gyro.rotationRateUnbiased.x
+			transform.Rotate (0, -Input.gyro.rotationRateUnbiased.y,0);
+			// transform.Rotate (0, 0, );
+			float translation = 0;
+
+
+			if (Vuforia.DefaultTrackableEventHandler.forwardImageIsFound) {
+				translation = baseSpeed;
+			}
+			Debug.Log (translation);
+
+			translation *= Time.deltaTime;
+			transform.Translate(0, 0, translation);
+
+			// transform.Translate (0, 0, -Input.gyro.rotationRateUnbiased.x);
+			// test(currentRotation,Input.gyro.rotationRateUnbiased.x);
 		}
 	}
 	public void MovePlayer (Transform playerTransform, float translation, float rotation) {
-		playerTransform.Translate(0, 0, translation);
+		playerTransform.Translate(0, 0, -translation);
 		playerTransform.Rotate(0, rotation, 0);
 	}
+	void test (Vector3 currentRotation, float val)
+	{
+		val = Mathf.Clamp (val, -0.4f, 0.4f);
 
+		// check if the transform is at its max rotations
+		// accelerometer y changes the x
+		float next = currentRotation.z - val;
+
+		// now that we have what we could possibly go to, check if it's within bounds.
+
+		if (next > 320 && next < 360) {
+			// good
+			// down
+			last = val;
+		} else if (next > 40 && next < 320) {
+			// no good
+			val = -last;
+		} else if (next < 40) {
+			// good
+			// up
+			last = val;
+		}
+		transform.Translate (0, 0, -val);
+
+	}
+	// See more at: http://www.theappguruz.com/blog/learn-to-use-accelerometer-in-unity-in-10-mins#sthash.irrTbjuG.dpuf
 }
