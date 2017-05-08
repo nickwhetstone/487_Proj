@@ -51,7 +51,7 @@ public class ARZ_Player_Control : MonoBehaviour {
 			Vector3 currentRotation = transform.localRotation.eulerAngles;
 
 			//  -Input.gyro.rotationRateUnbiased.x
-			transform.Rotate (0, -Input.gyro.rotationRateUnbiased.y,0);
+			transform.Rotate (0, -Input.gyro.rotationRateUnbiased.y * sensitivity,0);
 			// transform.Rotate (0, 0, );
 			float translation = 0;
 
