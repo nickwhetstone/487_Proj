@@ -5,15 +5,23 @@ using UnityEngine;
 public class AgentDeathState : IAgentState {
 	private readonly StatePatternAgent agent;
 	private float searchTimer;
+	private bool isDead = false;
 
 	public AgentDeathState (StatePatternAgent statePatternAgent)
 	{
 		agent = statePatternAgent;
 	}
+	void OnCollisionEnter (Collision other) { }
 
 	public void UpdateState()
 	{
-		
+		if (!isDead) {
+			agent.agentController.SetAgentAnimationSpeed (1f);
+			agent.agentController.SetAgentMove ("kill");
+			agent.navMeshAgent.speed = 0f;
+
+			isDead = true;
+		}
 	}
 
 	public void OnTriggerEnter (Collider other)
@@ -21,33 +29,4 @@ public class AgentDeathState : IAgentState {
 
 	}
 
-	public void ToAgentCuteState()
-	{
-	}
-	public void ToAgentCircleState()
-	{
-	}
-	public void ToAgentPatrolState()
-	{
-	}
-	public void ToAgentAttackState()
-	{
-
-	}
-	public void ToAgentChaseState()
-	{
-	}
-	public void ToAgentEatState()
-	{
-	}
-	public void ToAgentAlertState()
-	{
-	}
-	public void ToAgentDeathState()
-	{
-	}
-	public void ToAgentSleepState()
-	{
-	}
 }
-
