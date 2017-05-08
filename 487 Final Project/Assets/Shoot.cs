@@ -5,6 +5,7 @@ using UnityEngine;
 public class Shoot : MonoBehaviour {
 
 	public GameObject Bullet;
+	public AudioSource fireSound;
 
 	// Use this for initialization
 	void Start () {
@@ -22,6 +23,7 @@ public class Shoot : MonoBehaviour {
 			GameObject bullet = Instantiate (Bullet, new Vector3(transform.forward.x, transform.forward.y + .2f, transform.forward.z), transform.rotation);
 			bullet.GetComponent<Rigidbody>().AddRelativeForce(new Vector3( 10, 0, 2000));
 			bullet.tag = "Bullet";
+			//fireSound.time = .1f;
 		}
 	}
 }
