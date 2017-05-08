@@ -15,6 +15,8 @@ public class ARZPlayerHUD : MonoBehaviour {
 	void OnGUI() {
 		GUI.skin.label.fontSize = 30;
 		GUI.Label(new Rect(10, 10, 200, 40), Vuforia.DefaultTrackableEventHandler.gunImageIsFound ? "Gun enabled" : "Gun disabled");
+		GUI.Label(new Rect(10, 50, 200, 40), "Kill Count: " +  ARZ_Player_Control.killCount);
+
 
 	}
 }

@@ -7,7 +7,7 @@ public class ARZ_Player_Control : MonoBehaviour {
 	public float speed = 10.0F;
 	public float rotationSpeed = 100.0F;
 
-
+	public static int killCount = 0;
 
 	public float smooth = 1f;
 	public float newRotation;
