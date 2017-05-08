@@ -19,8 +19,8 @@ public class Shoot : MonoBehaviour {
 	void FixedUpdate() {
 		if(Vuforia.DefaultTrackableEventHandler.gunImageIsFound) {
 			Debug.Log ("Fire in the hole!");
-			GameObject bullet = Instantiate (Bullet, transform.forward, transform.rotation);
-			bullet.GetComponent<Rigidbody>().AddRelativeForce(new Vector3( 50, 50, 2000));
+			GameObject bullet = Instantiate (Bullet, new Vector3(transform.forward.x, transform.forward.y + .2f, transform.forward.z), transform.rotation);
+			bullet.GetComponent<Rigidbody>().AddRelativeForce(new Vector3( 10, 0, 2000));
 			bullet.tag = "Bullet";
 		}
 	}
