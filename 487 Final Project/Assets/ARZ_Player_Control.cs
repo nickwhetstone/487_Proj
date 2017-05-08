@@ -38,10 +38,10 @@ public class ARZ_Player_Control : MonoBehaviour {
 		if (camerasHookedUp) {
 
 			if (Vuforia.DefaultTrackableEventHandler.gunImageIsFound) {
-				gun.GetComponent<MeshRenderer> ().enabled = true;
+				gun.SetActive(true);
 				// start firing
 			} else {
-				gun.GetComponent<MeshRenderer> ().enabled = false;
+				gun.SetActive(false);
 				// stop firing
 			}
 

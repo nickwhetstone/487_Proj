@@ -47,14 +47,15 @@ public class ARZ_Camera_Hack : MonoBehaviour {
 				Debug.Log ("Found Cam Right");
 			} 
 		}
+
 	}
 	private void AddCameraComponents(GameObject cam) {
-				Rigidbody camRb = cam.AddComponent<Rigidbody> ();
-				camRb.useGravity = true;
-				camRb.isKinematic = false;
-				camRb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+		Rigidbody camRb = cam.AddComponent<Rigidbody> ();
+		camRb.useGravity = true;
+		camRb.isKinematic = false;
+		camRb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
 
-				BoxCollider col = cam.AddComponent<BoxCollider> ();
-				col.size = new Vector3(5f,1f,1f);
+		BoxCollider col = cam.AddComponent<BoxCollider> ();
+		col.size = new Vector3(5f,1f,1f);
 	}
 }
