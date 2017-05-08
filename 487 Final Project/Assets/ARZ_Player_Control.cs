@@ -72,7 +72,7 @@ public class ARZ_Player_Control : MonoBehaviour {
 		//pre-processing
 		currentAcceleration = Vector3.Lerp(currentAcceleration, Input.acceleration - initialAcceleration, Time.deltaTime/smooth);
 		newRotation = Mathf.Clamp(currentAcceleration.x * sensitivity, -1, 1);
-		transform.Rotate(0, newRotation, 0);
+		transform.Rotate(0, currentAcceleration.x * sensitivity, 0);
 	}
 	// See more at: http://www.theappguruz.com/blog/learn-to-use-accelerometer-in-unity-in-10-mins#sthash.irrTbjuG.dpuf
 }
