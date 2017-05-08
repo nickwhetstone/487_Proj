@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class AgentDeathState : IAgentState {
 	private readonly StatePatternAgent agent;
-	private float searchTimer;
 	private bool isDead = false;
+	private float deathTimer = 0f;
 
 	public AgentDeathState (StatePatternAgent statePatternAgent)
 	{
@@ -20,14 +20,25 @@ public class AgentDeathState : IAgentState {
 			agent.agentController.SetAgentAnimationSpeed (1f);
 			agent.agentController.SetAgentMove ("kill");
 			agent.navMeshAgent.speed = 0f;
-
 			isDead = true;
+
+		} else {
+			deathTimer += Time.deltaTime;
+		}
+		if (deathTimer > 5f) {
+			Revive ();
 		}
 	}
 
 	public void OnTriggerEnter (Collider other)
 	{
 
+	}
+	void Revive() {
+		Debug.Log ("Revive");
+		isDead = false;
+		deathTimer = 0f;
+		agent.ToState ("ApproachTarget");
 	}
 
 }
