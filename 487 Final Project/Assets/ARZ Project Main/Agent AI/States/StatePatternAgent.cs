@@ -94,6 +94,7 @@ public class StatePatternAgent : MonoBehaviour {
 
 		private void OnTriggerEnter(Collider other)
 		{
+			
 		/*
 			if (currentState == agentSleepState) {
 			} else {
@@ -117,6 +118,11 @@ public class StatePatternAgent : MonoBehaviour {
 			}
 			*/
 		}
+	private void OnCollisionEnter(Collision other) {
+		if (other.gameObject.CompareTag ("Bullet")) {
+			ToState ("Death");
+		}
+	}
 	public void Kill() {
 		/*
 		if (!agentController.isdead) {
@@ -149,6 +155,9 @@ public class StatePatternAgent : MonoBehaviour {
 			break;
 		case "StareDown": 
 			currentState = agentStareDownState;
+			break;
+		case "Death": 
+			currentState = agentDeathState;
 			break;
 			default: 
 				break;
